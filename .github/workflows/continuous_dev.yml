@@ -35,3 +35,11 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{env.DOCKER_USERNAME}}/${{env.IMG_NAME}}:latest
+      - 
+        name: Ping server
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://ansible.io/api/v2/job_templates/84/launch/'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json"}'
+          data: '{"image": ${{env.IMG_NAME}}}'
