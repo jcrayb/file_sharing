@@ -39,7 +39,7 @@ jobs:
         name: Ping server
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'https://ansible.io/api/v2/job_templates/84/launch/'
+          url: 'https://dev.jcrayb.com/ping'
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json"}'
           data: '{"image": ${{env.IMG_NAME}}}'
