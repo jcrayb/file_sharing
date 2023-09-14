@@ -39,7 +39,7 @@ jobs:
         name: Ping server
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'https://dev.jcrayb.com/ping'
+          url: 'http://docker.jcrayb.com/ping'
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json"}'
           data: '{"image": ${{env.IMG_NAME}}}'
