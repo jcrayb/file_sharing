@@ -35,11 +35,3 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{env.DOCKER_USERNAME}}/${{env.IMG_NAME}}:latest
-      - 
-        name: Ping server
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'http://docker.jcrayb.com/ping'
-          method: 'POST'
-          customHeaders: '{"Content-Type": "application/json"}'
-          data: '{"image": ${{env.IMG_NAME}}}'
