@@ -1,8 +1,10 @@
 from flask import Flask, send_from_directory, make_response, abort
+from flask_cors import CORS
 from mimetypes import guess_type
 import os
 
 app = Flask(__name__, static_folder = 'static')
+CORS(app)
 shared_folder = 'files'
 
 
@@ -33,5 +35,5 @@ def healthcheck():
 if __name__ == '__main__':
     if not os.path.exists(shared_folder):
         os.mkdir(shared_folder)
-    #app.run(host="0.0.0.0", port = '8080')
-    app.run(host="0.0.0.0", port = '8080', debug=True)
+    app.run(host="0.0.0.0", port = '8080')
+    #app.run(host="0.0.0.0", port = '8080', debug=True)
