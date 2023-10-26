@@ -1,8 +1,8 @@
 function save_link(){
     link = document.getElementsByName('save-link-input')[0].value;
     name = document.getElementsByName('save-name-input')[0].value;
-    if(link===""){
-        document.getElementById('save-link-error').innerHTML = "Please add a link to save."
+    if(link==="" || name===""){
+        document.getElementById('save-link-error').innerHTML = "Please add a link and name to save."
         return
     }
     const url = new URL(link)
