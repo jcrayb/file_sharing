@@ -15,7 +15,6 @@ function fetch_tiling(){
 }
 
 function display_folders(data){
-    
     data.forEach(element =>{
         container.innerHTML += `
         <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>

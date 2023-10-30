@@ -23,8 +23,8 @@ def tile_size(dim):
     width = math.floor(width) + 1 if width_dec > .5 else width
 
 
-    height = 4 if height > 4 else height
-    width = 4 if width > 4 else width
+    height = 6 if height > 6 else height
+    width = 6 if width > 6 else width
     
     
     return width, height
