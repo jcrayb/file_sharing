@@ -5,7 +5,7 @@ import os
 
 from dir.app import dir
 
-#from utils import display_markdown
+from utils import display_markdown
 
 app = Flask(__name__, static_folder = 'static')
 app.register_blueprint(dir)
@@ -16,10 +16,6 @@ shared_folder = 'files'
 @app.route('/files', defaults={'path':''}, methods=['GET'])
 @app.route('/files/<path:path>')
 def route_get_files(path):
-    if not path:
-        return abort(404)
-    
-
     total_path = os.path.join(shared_folder, path)
 
     if not os.path.exists(total_path):
@@ -41,14 +37,14 @@ def route_get_files(path):
         return response
 
     if filetype == 'text':
-        '''if ext == 'markdown':
+        if ext == 'markdown':
             html = display_markdown(total_path)
-            return render_template('markdown.html', markdown=html)'''
-        #else:
-        data = open(total_path, 'r').read()
-        response = make_response(data, 200)
-        response.mimetype = 'text/plain'
-        return response
+            return render_template('markdown.html', markdown=html)
+        else:
+            data = open(total_path, 'r').read()
+            response = make_response(data, 200)
+            response.mimetype = 'text/plain'
+            return response
     
     return send_from_directory(shared_folder, path)
 

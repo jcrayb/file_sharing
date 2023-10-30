@@ -6,22 +6,8 @@ function fetch_tiling(){
     .then(response => response.json())
     .then(data =>{
         console.log(data)
-        generate_tiling(data)
-    }
-    ).catch(error=>{
-        console.error(error)
-    })
-}
-
-function fetch_folders(){
-    folder = document.getElementById('path').innerHTML
-    fetch('/api/folders?dir='+folder, {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(data =>{
-        console.log(data)
-        display_folders(data)
+        generate_tiling(data['images'])
+        list_files(data['not_images'])
     }
     ).catch(error=>{
         console.error(error)
@@ -29,15 +15,43 @@ function fetch_folders(){
 }
 
 function display_folders(data){
-    container = document.getElementById('folder-container')
+    
     data.forEach(element =>{
         container.innerHTML += `
-        <a href="/${element[1]}">
-            <div>
+        <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>
+            <div class='folder' >
+            <img src="/static/folder.png" style='display: block;'>
             <p>${element[0]}</p>
             </div>
         </a>
         `
+    })
+}
+
+function list_files(data){
+    container_folder = document.getElementById('folder-container')
+    container_files = document.getElementById('file-container')
+    data.forEach(element =>{
+        if(element[2] === 'folder'){
+            container_folder.innerHTML += `
+            <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>
+                <div class='folder' >
+                <img src="/static/folder.png" style='display: block;'>
+                <p>${element[0]}</p>
+                </div>
+            </a>
+            `
+        }else{
+            container_files.innerHTML += `
+            <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>
+                <div class='folder' >
+                <img src="/static/file.png" style='display: block;'>
+                <p>${element[0]}</p>
+                </div>
+            </a>
+            `
+        }
+        
     })
 }
 

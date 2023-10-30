@@ -49,19 +49,22 @@ def list_folders(dir: str) -> list:
     return folders
 
 def tile_images(img_dir: str, grid: tuple) -> np.array:
-    results = {}
+    results = {'images':{}, 'not_images':[]}
     start = time.time()
     img_dims_list = []
-
+    not_image_list = []
     i = 1
     images = os.listdir(img_dir)
     img_list = []
     for image in images:
         img_path = os.path.join(img_dir, image)
-        if os.path.isdir(img_path):
+        try:
+            img = Image.open(img_path)
+        except:
+            type_ = 'folder' if os.path.isdir(img_path) else 'file' 
+            not_image_list += [(image, img_path, type_)]
             continue
         img_list += [img_path] 
-        img = Image.open(img_path)
         size = tile_size(img.size)
         width, height = size
         
@@ -96,13 +99,13 @@ def tile_images(img_dir: str, grid: tuple) -> np.array:
                         z += 1
                         continue
                     array[j, i:i+width] = [index for z in range(width)]
-                    results[index] = {'link':img_list[index-1], 'position':[j, i], 'size':[height, width]}
+                    results['images'][index] = {'link':img_list[index-1], 'position':[j, i], 'size':[height, width]}
                 else:
                     if array[j:j+height, i].any():
                         z += 1
                         continue
                     array[j:j+height, i] = [index for z in range(height)]
-                    results[index] = {'link':img_list[index-1], 'position':[j, i], 'size':[height, width]}
+                    results['images'][index] = {'link':img_list[index-1], 'position':[j, i], 'size':[height, width]}
                 i = i+width
                 if i == 6:
                     i = 0 
@@ -117,7 +120,7 @@ def tile_images(img_dir: str, grid: tuple) -> np.array:
                 array[j, i] = sorted_dims[smol_index][2]
                 sorted_dims.remove(sorted_dims[smol_index])
                 print(f'forcing inserts, index = {smol_index}')
-                results[index] = {'link':images[index-1], 'position':[j, i], 'size':[1, 1]}
+                results['images'][index] = {'link':images[index-1], 'position':[j, i], 'size':[1, 1]}
             else:
                 i += 1
                 if i == 6:
@@ -131,4 +134,5 @@ def tile_images(img_dir: str, grid: tuple) -> np.array:
             if i == 6:
                 i = 0 
                 j += 1
+    results['not_images'] = not_image_list
     return array, True, results
