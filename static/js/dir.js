@@ -7,7 +7,8 @@ function fetch_tiling(){
     .then(data =>{
         console.log(data)
         generate_tiling(data['images'])
-        list_files(data['not_images'])
+        list_files(data['files'])
+        list_folders(data['folders'])
     }
     ).catch(error=>{
         console.error(error)
@@ -28,19 +29,12 @@ function display_folders(data){
 }
 
 function list_files(data){
-    container_folder = document.getElementById('folder-container')
+    console.log(data)
     container_files = document.getElementById('file-container')
+    if(data.length === 0){
+        container_files.classList.add('d-none');
+    }
     data.forEach(element =>{
-        if(element[2] === 'folder'){
-            container_folder.innerHTML += `
-            <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>
-                <div class='folder' >
-                <img src="/static/folder.png" style='display: block;'>
-                <p>${element[0]}</p>
-                </div>
-            </a>
-            `
-        }else{
             container_files.innerHTML += `
             <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>
                 <div class='folder' >
@@ -49,8 +43,23 @@ function list_files(data){
                 </div>
             </a>
             `
-        }
-        
+    })
+}
+
+function list_folders(data){
+    container_folder = document.getElementById('folder-container')
+    if(data.length === 0){
+        container_folder.classList.add('d-none');
+    }
+    data.forEach(element =>{
+        container_folder.innerHTML += `
+            <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>
+                <div class='folder' >
+                <img src="/static/folder.png" style='display: block;'>
+                <p>${element[0]}</p>
+                </div>
+            </a>
+            `
     })
 }
 
@@ -76,7 +85,7 @@ function generate_tiling(data){
             size = obj['size']
             position = obj['position']
             body.innerHTML += `
-            <a href=${obj['link']}>
+            <a href=/${obj['link']}>
             <div style="background-image: url('https://files.jcrayb.com/${String(obj['link'])}'); 
             height:${height_row*size[0]-5}px; 
             width:${width_column*size[1]-5}px; 
@@ -95,7 +104,7 @@ function generate_tiling(data){
             size = obj['size']
             position = obj['position']
             body.innerHTML += `
-            <a href=${obj['link']}>
+            <a href=/${obj['link']}>
             <div style="background-image: url('https://files.jcrayb.com/${String(obj['link'])}'); 
             height:250px; 
             background-size:cover;

@@ -49,27 +49,38 @@ def list_folders(dir: str) -> list:
     return folders
 
 def tile_images(img_dir: str, grid: tuple) -> np.array:
-    results = {'images':{}, 'not_images':[]}
+    results = {'images':{}, 'folders':[], 'files':[]}
     start = time.time()
     img_dims_list = []
-    not_image_list = []
     i = 1
     images = os.listdir(img_dir)
+    print(images)
     img_list = []
+    folders_list = []
+    files_list = []
     for image in images:
         img_path = os.path.join(img_dir, image)
         try:
             img = Image.open(img_path)
         except:
             type_ = 'folder' if os.path.isdir(img_path) else 'file' 
-            not_image_list += [(image, img_path, type_)]
+            if type_ == 'file':
+                
+                files_list += [(image, img_path, type_)]
+            else:
+                print('folder')
+                folders_list += [(image, img_path, type_)]
+                print(folders_list)
             continue
+        print(folders_list)
         img_list += [img_path] 
         size = tile_size(img.size)
         width, height = size
-        
+
         img_dims_list += [(width, height, i)]
         i+=1
+    results['folders'] = folders_list
+    results['files'] = files_list
     random.shuffle(img_dims_list)
     #sorted_dims = sorted(img_dims_list, reverse=True)
     #sorted_dims = sorted(sorted_dims, key=lambda x: x[1], reverse=False)
@@ -134,5 +145,4 @@ def tile_images(img_dir: str, grid: tuple) -> np.array:
             if i == 6:
                 i = 0 
                 j += 1
-    results['not_images'] = not_image_list
     return array, True, results
