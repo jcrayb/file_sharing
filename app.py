@@ -3,9 +3,13 @@ from flask_cors import CORS
 from mimetypes import guess_type
 import os
 
+from dir.app import dir
+
 #from utils import display_markdown
 
 app = Flask(__name__, static_folder = 'static')
+app.register_blueprint(dir)
+
 CORS(app)
 shared_folder = 'files'
 
@@ -15,10 +19,13 @@ def route_get_files(path):
     if not path:
         return abort(404)
     
+
     total_path = os.path.join(shared_folder, path)
 
     if not os.path.exists(total_path):
         return make_response('File doesn\'t exist', 404)
+    if os.path.isdir(total_path):
+        return render_template('dir.html', dir=total_path)
     
     try:
         mime = guess_type(total_path)[0].split('/')
