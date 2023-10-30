@@ -6,34 +6,38 @@ function fetch_tiling(){
     .then(response => response.json())
     .then(data =>{
         console.log(data)
-        generate_tiling(data['images'])
-        list_files(data['files'])
-        list_folders(data['folders'])
+        console.log(data['images'].length)
+
+        if(Object.keys(data['images']).length === 0 && data['files'].length === 0 && data['folders'].length === 0){
+            document.getElementById('error_message').innerHTML = 'Directory is empty'
+            return
+        }
+        resize_containers();
+        generate_tiling(data['images']);
+        list_files(data['files']);
+        list_folders(data['folders']);
+        
     }
     ).catch(error=>{
         console.error(error)
     })
 }
 
-function display_folders(data){
-    data.forEach(element =>{
-        container.innerHTML += `
-        <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>
-            <div class='folder' >
-            <img src="/static/folder.png" style='display: block;'>
-            <p>${element[0]}</p>
-            </div>
-        </a>
-        `
-    })
+function resize_containers(){
+    container_files = document.getElementById('file-container');
+    container_folder = document.getElementById('folder-container');
+    width =  document.getElementById('main-container').offsetWidth;
+
+    container_folder.style.cssText = `grid-template-columns: repeat(${Math.floor(width/164)}, 164px);`;
+    container_files.style.cssText = `grid-template-columns: repeat(${Math.floor(width/164)}, 164px);`;
 }
 
 function list_files(data){
-    console.log(data)
     container_files = document.getElementById('file-container')
     if(data.length === 0){
         container_files.classList.add('d-none');
     }
+
     data.forEach(element =>{
             container_files.innerHTML += `
             <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>

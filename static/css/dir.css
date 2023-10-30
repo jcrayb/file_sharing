@@ -1,11 +1,11 @@
 #folder-container{
     display: grid;
-    grid-template-columns: repeat(5, 164px);
     grid-template-rows: repeat(1, 164px);
 }
 
+
+
 #file-container{
     display: grid;
-    grid-template-columns: repeat(5, 164px);
     grid-template-rows: repeat(1, 164px);
 }
