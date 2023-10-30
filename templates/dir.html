@@ -12,7 +12,7 @@
 <body>
     <div class="container px-sm-0" id="main-container">
         <h1>Content in: {{dir}}</h1>
-        <a href="/{{parent_dir}}" class="text-dark"><h5><= Go to parent directory</h5></a>
+        {{parent_dir|safe}}
         <h3 id="error_message" class="text-center"></h3>
         <div id="folder-container" class="text-center" style="position: relative;">
 
