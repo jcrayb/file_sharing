@@ -73,4 +73,5 @@ function display_saved_links(property_name){
 function remove_link(index){
     document.getElementById(`link-${index}`).remove();
     remove_from_local_storage('files', index);
+    display_saved_links('files');
 }
