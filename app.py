@@ -21,7 +21,8 @@ def route_get_files(path):
     if not os.path.exists(total_path):
         return make_response('File doesn\'t exist', 404)
     if os.path.isdir(total_path):
-        return render_template('dir.html', dir=total_path)
+        parent_dir = os.path.dirname(total_path)
+        return render_template('dir.html', dir=total_path, parent_dir=parent_dir)
     
     try:
         mime = guess_type(total_path)[0].split('/')

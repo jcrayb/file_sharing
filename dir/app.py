@@ -1,4 +1,5 @@
-from flask import Flask, render_template, Blueprint, request
+from flask import Flask, render_template, Blueprint, request, jsonify
+import os
 
 from .utils import tile_images, list_folders
 
@@ -23,6 +24,12 @@ def route_api_folders():
     folders = list_folders(folder_dir)
     print(folders)
     return folders
+
+@dir.route('/api/parent_dir')
+def route_api_parent_dir():
+    folder_dir = request.args['dir']
+    folders = os.path.dirname(folder_dir)
+    return jsonify(folders)
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=8080, debug=True)
