@@ -11,13 +11,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Text</h1>
+        <h1>Content in: {{dir}}</h1>
+        <div id="folder-container" class="text-center" style="position: relative;">
+
+        </div>
         <div id="img-container" class="text-center" style="position: relative;">
 
         </div>
     </div>
     <p id='path' class="d-none">{{dir}}</p>
-    <script>fetch_tiling()</script>
+    <script>fetch_tiling(); fetch_folders();</script>
     <script>
         window.onresize = (event) =>{
             resize_tiling();

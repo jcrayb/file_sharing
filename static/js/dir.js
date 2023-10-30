@@ -1,6 +1,6 @@
 function fetch_tiling(){
     folder = document.getElementById('path').innerHTML
-    fetch('/api/display_dir?dir='+folder, {
+    fetch('/api/images?dir='+folder, {
         method: 'GET'
     })
     .then(response => response.json())
@@ -10,6 +10,34 @@ function fetch_tiling(){
     }
     ).catch(error=>{
         console.error(error)
+    })
+}
+
+function fetch_folders(){
+    folder = document.getElementById('path').innerHTML
+    fetch('/api/folders?dir='+folder, {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data =>{
+        console.log(data)
+        display_folders(data)
+    }
+    ).catch(error=>{
+        console.error(error)
+    })
+}
+
+function display_folders(data){
+    container = document.getElementById('folder-container')
+    data.forEach(element =>{
+        container.innerHTML += `
+        <a href="/${element[1]}">
+            <div>
+            <p>${element[0]}</p>
+            </div>
+        </a>
+        `
     })
 }
 

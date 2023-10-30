@@ -38,7 +38,16 @@ def get_smallest(dim_list: list) -> int:
     min_value = min(max_dims)
     index = max_dims.index(min_value)
     return index
-    
+
+def list_folders(dir: str) -> list:
+    folders = []
+    current_path = os.path.join(os.getcwd(), dir)
+    #dir = dir.replace('files', '')
+    for element in os.listdir(current_path):
+        if os.path.isdir(os.path.join(current_path, element)):
+            folders += [(element, os.path.join(dir, element))]
+    return folders
+
 def tile_images(img_dir: str, grid: tuple) -> np.array:
     results = {}
     start = time.time()
