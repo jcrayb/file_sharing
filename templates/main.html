@@ -16,14 +16,14 @@
         <br>
         <div class="row pb-2">
             <div class="col-12 col-sm-6 col-md-4">
-                <label for="save-link-input">Save a link:</label>
+                <label for="save-link-input" class="form-label">Save a link (include 'https://'):</label>
                 <br>
-                <input type="text" name="save-link-input" class="w-100">
+                <input type="text" name="save-link-input" class="w-100 form-control">
             </div>
             <div class="col-12 col-sm-6 col-md-4">
-                <label for="save-name-input">Give it a name!:</label>
+                <label for="save-name-input" class="form-label">Give it a name!:</label>
                 <br>
-                <input type="text" name="save-name-input" class="w-100">
+                <input type="text" name="save-name-input" class="w-100 form-control">
             </div>
             
             
@@ -31,8 +31,6 @@
         <button onclick="save_link()" class="btn btn-secondary">Add saved links</button>
         
         <p id="save-link-error"></p>
-
-        <button onclick="display_saved_links('files');">Display saved links</button>
     </div>
     <script>
         display_saved_links('files');

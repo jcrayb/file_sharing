@@ -5,10 +5,17 @@ function save_link(){
         document.getElementById('save-link-error').innerHTML = "Please add a link and name to save."
         return
     }
-    const url = new URL(link)
+    try {
+        url = new URL(link)
+    } catch (error) {
+        document.getElementById('save-link-error').innerHTML = "The link you are trying to is invalid."
+        return
+    }
+    
 
     if(url.host!=="files.jcrayb.com"){
         document.getElementById('save-link-error').innerHTML = "The link you are trying to save isn't from files.jcrayb.com."
+        return
     }
     append_to_local_storage('files', name, link)
     display_saved_links('files')
@@ -36,9 +43,9 @@ function display_saved_links(property_name){
     saved_links_array.forEach(link => {
         saved_links_container.innerHTML += `
         <a href="${link[1]}" class="text-decoration-none">
-            <div class="card p-2">
-                <p class="m-0">Name:${link[0]}</p> 
-                <p class="m-0">Link:${link[1]}</p>
+            <div class="card p-2 my-2">
+                <p class="m-0">Name: &ensp; ${link[0]}</p> 
+                <p class="m-0">Link: &ensp; ${link[1]}</p>
             </div>
         </a>
         `
