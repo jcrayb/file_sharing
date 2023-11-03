@@ -90,7 +90,7 @@ function generate_tiling(data){
             position = obj['position']
             body.innerHTML += `
             <a href=/${obj['link']}>
-            <div style="background-image: url('https://files.jcrayb.com/${String(obj['link'])}'); 
+            <div style="background-image: url('https://files.jcrayb.com/compressed/${String(obj['link'])}?dim=${size}'); 
             height:${height_row*size[0]-5}px; 
             width:${width_column*size[1]-5}px; 
             position:absolute; 
@@ -109,7 +109,7 @@ function generate_tiling(data){
             position = obj['position']
             body.innerHTML += `
             <a href=/${obj['link']}>
-            <div style="background-image: url('https://files.jcrayb.com/${String(obj['link'])}'); 
+            <div style="background-image: url('https://files.jcrayb.com/compressed/${String(obj['link'])}'); 
             height:250px; 
             background-size:cover;
             background-repeat:   no-repeat;
