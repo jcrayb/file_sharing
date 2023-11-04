@@ -7,7 +7,7 @@ from PIL import Image
 
 from dir.app import dir
 
-from utils import display_markdown, serve_pil_image
+from utils import display_markdown
 
 app = Flask(__name__, static_folder = 'static')
 app.register_blueprint(dir)

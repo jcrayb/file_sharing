@@ -4,7 +4,18 @@ import os
 import random
 import numpy as np
 import time
+import json
 
+cached_dict_dir = 'cached.json'
+
+def is_cached(dir):
+    layouts = json.load(open(cached_dict_dir, 'r'))
+
+    if dir not in layouts:
+        return False, ''
+    else:
+        layout = layouts[dir] 
+        return True, layout
 
 def tile_size(dim):
     min_var = min(dim)

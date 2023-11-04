@@ -1,7 +1,7 @@
 from flask import Flask, render_template, Blueprint, request, jsonify
 import os
 
-from .utils import tile_images, list_folders
+from .utils import tile_images, list_folders, is_cached
 
 app = Flask(__name__)
 
@@ -14,6 +14,9 @@ dir = Blueprint('dir', __name__,
 def route_api_images():
     img_dir = request.args['dir']
     returned = False
+    cache = is_cached(img_dir)
+    if cache[0]:
+        return cache[1]
     while not returned:
         array, returned, results = tile_images(img_dir, grid)
     return results
