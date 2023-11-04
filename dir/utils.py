@@ -6,9 +6,13 @@ import numpy as np
 import time
 import json
 
-cached_dict_dir = 'cached.json'
+cached_dict_dir = './cache/cached.json'
 
 def is_cached(dir):
+    if not os.path.exists(cached_dict_dir):
+        init = {"init":""}
+        json.dump(init, open(cached_dict_dir, 'w'))
+        
     layouts = json.load(open(cached_dict_dir, 'r'))
 
     if dir not in layouts:
@@ -16,6 +20,13 @@ def is_cached(dir):
     else:
         layout = layouts[dir] 
         return True, layout
+    return
+
+def cache_layout(dir, layout):
+    layouts = json.load(open(cached_dict_dir, 'r'))
+    layouts[dir] = layout
+    json.dump(layouts, open(cached_dict_dir, 'w'))
+    return
 
 def tile_size(dim):
     min_var = min(dim)
@@ -66,7 +77,6 @@ def tile_images(img_dir: str, grid: tuple) -> np.array:
     img_dims_list = []
     i = 1
     images = os.listdir(img_dir)
-    print(images)
     img_list = []
     folders_list = []
     files_list = []
@@ -80,11 +90,8 @@ def tile_images(img_dir: str, grid: tuple) -> np.array:
                 
                 files_list += [(image, img_path, type_)]
             else:
-                print('folder')
                 folders_list += [(image, img_path, type_)]
-                print(folders_list)
             continue
-        print(folders_list)
         img_list += [img_path] 
         size = tile_size(img.size)
         width, height = size
@@ -142,7 +149,6 @@ def tile_images(img_dir: str, grid: tuple) -> np.array:
                 smol_index = get_smallest(sorted_dims)
                 array[j, i] = sorted_dims[smol_index][2]
                 sorted_dims.remove(sorted_dims[smol_index])
-                print(f'forcing inserts, index = {smol_index}')
                 results['images'][index] = {'link':images[index-1], 'position':[j, i], 'size':[1, 1]}
             else:
                 i += 1
