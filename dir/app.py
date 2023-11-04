@@ -15,6 +15,7 @@ def route_api_images():
     img_dir = request.args['dir']
     returned = False
     cache = is_cached(img_dir)
+    
     if cache[0]:
         return cache[1]
     while not returned:
@@ -34,5 +35,5 @@ def route_api_parent_dir():
     folders = os.path.dirname(folder_dir)
     return jsonify(folders)
 
-if __name__ == '__main__':
-    app.run(host="127.0.0.1", port=8080, debug=True)
+if not os.path.exists('./cache'):
+    os.mkdir('./cache')
