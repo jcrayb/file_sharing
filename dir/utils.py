@@ -12,19 +12,22 @@ def is_cached(dir):
     if not os.path.exists(cached_dict_dir):
         init = {"init":""}
         json.dump(init, open(cached_dict_dir, 'w'))
-        
+    
+    contents = os.listdir(dir)
     layouts = json.load(open(cached_dict_dir, 'r'))
 
     if dir not in layouts:
         return False, ''
+    elif layouts[dir]['contents'] != contents:
+        return False, ''
     else:
-        layout = layouts[dir] 
+        layout = layouts[dir]['layout']
         return True, layout
     return
 
 def cache_layout(dir, layout):
     layouts = json.load(open(cached_dict_dir, 'r'))
-    layouts[dir] = layout
+    layouts[dir] = {'layout':layout, 'contents':os.listdir(dir)}
     json.dump(layouts, open(cached_dict_dir, 'w'))
     return
 
