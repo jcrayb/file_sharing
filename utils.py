@@ -1,6 +1,9 @@
 import markdown
 from io import StringIO
 from flask import send_file
+import json
+
+
 
 def display_markdown(file_path):
     md = open(file_path, 'r').read()
@@ -12,3 +15,6 @@ def serve_pil_image(pil_img):
     pil_img.save(img_io, 'JPEG', quality=70)
     img_io.seek(0)
     return send_file(img_io, mimetype='image/jpeg')
+
+
+
