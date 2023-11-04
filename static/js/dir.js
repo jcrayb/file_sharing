@@ -109,7 +109,7 @@ function generate_tiling(data){
             position = obj['position']
             body.innerHTML += `
             <a href=/${obj['link']}>
-            <div style="background-image: url('https://files.jcrayb.com/compressed/${String(obj['link'])}?dim=[${size}]'); 
+            <div style="background-image: url('https://files.jcrayb.com/compressed/${String(obj['link'])}?dim=[2,2]'); 
             height:250px; 
             background-size:cover;
             background-repeat:   no-repeat;
