@@ -6,11 +6,13 @@ import io
 from PIL import Image
 
 from dir.app import dir
+from cloud.app import cloud
 
 from utils import display_markdown
 
 app = Flask(__name__, static_folder = 'static')
 app.register_blueprint(dir)
+app.register_blueprint(cloud)
 
 CORS(app)
 shared_folder = 'files'
