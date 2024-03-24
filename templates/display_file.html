@@ -17,7 +17,7 @@
     <!-- CODE HIGHLIGHTING -->
     <link rel="stylesheet" id='darkTheme' href="/static/css/atom-one-dark.css" disabled>
     <link rel="stylesheet" id="lightTheme" href="/static/css/stackoverflow-light.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 
 
     <!-- CUSTOM CSS-->
@@ -84,7 +84,7 @@ function darkTheme(){
       // Handle the error here
     });
   }
-</script>
+</script>   
 </head>
 <body>
   <!-- <div id="userSection">
@@ -117,22 +117,6 @@ function darkTheme(){
 </div>
 <div id="path" style="display:none">{{path|safe}}</div>
 
-<script>hljs.highlightAll();</script>
-<script>
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      document.getElementById('signout').style.display = 'block'
-      uid = user.uid;
-      userGraphic = `<a href='/user/${uid}'><div id='userInfo'><img id='userImg' src='${user.photoURL}'><div id='userText'><p style='font-weight:bold;'>${user.displayName}</p><p>${user.email}</p></div></div><a>`
-      document.getElementById('userInfoContainer').innerHTML = userGraphic;
-    }
-    else{
-      uid=''
-      userGraphic = '<div id="userInfoContainer"><div id="userInfo"><a href="/login" style="font-weight:bold;"><p>Click to login</p></a></div></div>';
-      document.getElementById('userInfoContainer').innerHTML = userGraphic;
-      console.log('No user is signed in...');
-    }
-});
-</script>
+<script>hljs.highlightAll(); console.log(1)</script>
 </body>
 </html>
