@@ -6,12 +6,13 @@ function fetch_tiling(){
     .then(response => response.json())
     .then(data =>{
         console.log(data)
-        console.log(data['images'].length)
+        console.log(data['images'])//.length)
 
         if(Object.keys(data['images']).length === 0 && data['files'].length === 0 && data['folders'].length === 0){
             document.getElementById('error_message').innerHTML = 'Directory is empty'
             return
         }
+        console.log(1)
         resize_containers();
         generate_tiling(data['images']);
         list_files(data['files']);
@@ -40,7 +41,7 @@ function list_files(data){
 
     data.forEach(element =>{
             container_files.innerHTML += `
-            <a href="/${element[1]}" class='d-flex align-content-center justify-content-center'>
+            <a href="/pretty/${element[1]}" class='d-flex align-content-center justify-content-center'>
                 <div class='folder' >
                 <img src="/static/file.png" style='display: block;'>
                 <p>${element[0]}</p>
@@ -68,6 +69,7 @@ function list_folders(data){
 }
 
 function generate_tiling(data){
+    console.log(data)
     body = document.getElementById('img-container')
     body.innerHTML = '';
     columns = 6
@@ -101,6 +103,7 @@ function generate_tiling(data){
             background-position: center center;">
             </div></a>
             `})
+            
     }else{
         Array.from(Object.keys(data)).forEach(index=>{
             
@@ -118,8 +121,9 @@ function generate_tiling(data){
             class="w-100">
             </div></a>
             `})  
+            console.log(3)
     }
-    
+    console.log(2)
 }
 
 function resize_tiling(){
