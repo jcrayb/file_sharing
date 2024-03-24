@@ -40,9 +40,11 @@
 
 <script>
 function copyToClipboard(){
-  var codeBox = document.getElementById('raw')
-  text = codeBox.innerHTML
+  var message_box = document.getElementById('response_text')
+  text = window.location.href;
+  console.log(text);
   navigator.clipboard.writeText(text);
+  message_box.innerText = 'Link copied to clipboard!';
 }
 
 function lightTheme(){
@@ -86,28 +88,29 @@ function darkTheme(){
 </script>
 </head>
 <body>
-  <div id="userSection">
+  <!-- <div id="userSection">
     <div id="userInfoContainer"></div>
     <button id="signout" onclick="signOut()" class="text-center btn btn-primary" style="display:none;">Sign Out</button>
   </div>
-  <a href="/"><button type="button" name="button">Return to main page</button></a>
+  <a href="/"><button type="button" name="button">Return to main page</button></a> -->
 
-<div class="container">
+<div class="container mt-md-4 mt-2">
   <div class="row w-100 mx-0">
-    <div class="col-md-2 px-1">
+    <div class="col-md-2 px-1 mt-2 mt-md-0">
       <button type="button" class=" btn btn-light btn-sm w-100 btn-outline-dark" onclick="window.location.href = '{{raw}}'">Get raw file</button>
     </div>
-    <div class="col-md-2 px-1">
+    <div class="col-md-2 px-1 mt-2 mt-md-0">
         <button type="button" class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="lightTheme()">Light theme</button>
     </div>
-    <div class="col-md-2 px-1">
+    <div class="col-md-2 px-1 mt-2 mt-md-0">
       <button type="button" class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="darkTheme()">Dark theme</button>
     </div>
-    <div class="col-md-4 px-1">
-      <p id='response_text' class="w-100"></p>
+    <!--  -->
+    <div class="col-md-2 px-1 mt-2 mt-md-0">
+      <button type="button" class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="copyToClipboard()">Share</button>
     </div>
-    <div class="col-md-2 px-1">
-      <button type="button" class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="generateCode()">Share</button>
+    <div class="col-md-4 px-1 mt-2 mt-md-0">
+      <p id='response_text' class="w-100"></p>
     </div>
   </div>
 
