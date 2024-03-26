@@ -35,16 +35,15 @@ def generateContent(path):
 def getFileProps(path):
     path = path.replace('\\', '/')
     fileType = mime.guess_type(path)[0]
-    
-    if path.split('/')[0].split('.')[-1] == ".md":
+    dot_ext = path.split('/')[0].split('.')[-1]
+    print(dot_ext)
+    if dot_ext.lower() == "md":
         return {"type":"text", "ext":'markdown'}
 
     if fileType:
         type = fileType.split('/')[0]
         ext = fileType.split('/')[1]
     else:
-        if path.split('/')[0].split('.')[-1] == ".md":
-            print(path)
         type = ''
         ext = ''
     print(type, ext)
