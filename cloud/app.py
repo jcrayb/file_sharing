@@ -3,6 +3,7 @@ import os
 import pandas as pd
 
 from .utils import generateContent
+from utils import display_markdown
 
 app = Flask(__name__)
 
@@ -20,5 +21,8 @@ def userpath(path):
     if language == 'csv':
         df = pd.read_csv(full_path)
         return render_template('display_sheet.html', raw=os.path.join('/files', path), path=path, table=df.to_html(classes='table table-stripped'))
-
+    elif language == 'markdown':
+        html = display_markdown(full_path)
+        return render_template('markdown.html', markdown=html)
+    
     return render_template('display_file.html', content=content, language=language, raw=os.path.join('/files', path) ,path=path)

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
   <head>
-    <title>Chris' Cloud Sharing Site</title>
+    <title>Chris' File Sharing Site</title>
     <link rel="shortcut icon" href="/static/icons/favicon.ico"/>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
@@ -17,7 +17,11 @@
     <!-- CODE HIGHLIGHTING -->
     <link rel="stylesheet" id='darkTheme' href="/static/css/atom-one-dark.css" disabled>
     <link rel="stylesheet" id="lightTheme" href="/static/css/stackoverflow-light.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
+
+    <script src="https://files.jcrayb.com/files/config/file-sharing/theme.js"></script>
+    
 
     <script src="/static/js/table-responsive-scrollbar-top.js"></script>
     <!-- CUSTOM CSS-->
@@ -40,61 +44,41 @@
 
 <script>
 function copyToClipboard(){
-  var codeBox = document.getElementById('raw')
-  text = codeBox.innerHTML
+  var message_box = document.getElementById('response_text')
+  text = window.location.href;
+  console.log(text);
   navigator.clipboard.writeText(text);
+  message_box.innerText = 'Link copied to clipboard!';
 }
 </script>
-
-<script>
-  function generateCode(uid){
-    path = document.getElementById('path').innerHTML
-    console.log(path)
-    document.getElementById('response_text').innerHTML = 'Submitted!'
-    fetch(`/getcode?uid=${uid}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({path}),
-    })
-    .then(response => response.json())
-    .then(data => {
-      error = data['error'];
-      if (error!==''){
-        document.getElementById('response_text').innerHTML = 'An error has occured, please try again.';
-        return ''
-      }
-      code = data['code'];
-      document.getElementById('response_text').innerHTML = `Here is your shareable link: /file/${code}`;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      // Handle the error here
-    });
-  }
-</script>
 </head>
-<body>
-  <div id="userSection">
+<body onload="themed_items();">
+  <!-- <div id="userSection">
     <div id="userInfoContainer"></div>
     <button id="signout" onclick="signOut()" class="text-center btn btn-primary" style="display:none;">Sign Out</button>
   </div>
-  <a href="/"><button type="button" name="button">Return to main page</button></a>
+  <a href="/"><button type="button" name="button">Return to main page</button></a> -->
 
-<div class="container">
-  <div class="row w-100 mx-0">
-    <div class="col-md-2 px-1">
-      <button type="button" class=" btn btn-light btn-sm w-100 btn-outline-dark" onclick="window.location.href = '{{raw}}'">Get raw file</button>
+  <div class="container mt-md-4 mt-2">
+    <div class="row w-100 mx-0">
+      <div class="col-md-2 px-1 mt-2 mt-md-0">
+        <button type="button" themed class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="window.location.href = '{{raw}}'">Get raw file</button>
+      </div>
+      <div class="col-md-2 px-1 mt-2 mt-md-0">
+          <button type="button" themed class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="lightTheme()">Light theme</button>
+      </div>
+      <div class="col-md-2 px-1 mt-2 mt-md-0">
+        <button type="button" themed class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="darkTheme()">Dark theme</button>
+      </div>
+      <!--  -->
+      <div class="col-md-2 px-1 mt-2 mt-md-0">
+        <button type="button" themed class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="copyToClipboard()">Share</button>
+      </div>
+      <div class="col-md-4 px-1 mt-2 mt-md-0">
+        <p id='response_text' class="w-100"></p>
+      </div>
     </div>
-    <div class="col-md-4 px-1">
-      <p id='response_text' class="w-100"></p>
-    </div>
-    <div class="col-md-2 px-1">
-      <button type="button" class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="generateCode()">Share</button>
-    </div>
-  </div>
-<div class="overflow-auto w-100">
+<div class="overflow-auto w-100 mt-2">
   {{table|safe}}
 </div>
 

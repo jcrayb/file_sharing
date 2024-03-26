@@ -9,7 +9,9 @@ extDict = {
     'html':'html',
     'plain':'plaintext',
     'css':'css',
-    "json":'json'
+    "json":'json',
+    "javascript": "js",
+    "markdown": "markdown"
 }
 
 def generateContent(path):

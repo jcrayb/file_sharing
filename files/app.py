@@ -13,12 +13,6 @@ cloud = Blueprint('cloud', __name__,
 def userpath(path):
     if not path or os.path.isdir(path):
         return abort(404)
-    '''if not dbFileExists(path):
-        return jsonify('error'), 404
-
-    print(dbGetFileProps(path))
-    if dbGetFileProps(path)['name'].split('.')[-1] == 'csv':
-        df = pd.read_csv(path)
-        return render_template('display_sheet.html', path=path, table=df.to_html(classes='table table-stripped'))'''
+    
     content, language, raw = generateContent(path)
     return render_template('display_file.html', content=content, language=language, raw=raw.replace('\\', '/'), path=path)
