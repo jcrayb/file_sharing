@@ -40,10 +40,10 @@ def route_get_files(path):
         return response
 
     if filetype == 'text':
-            data = open(total_path, 'r').read()
-            response = make_response(data, 200)
-            response.mimetype = 'text/plain'
-            return response
+        data = open(total_path, 'r').read()
+        response = make_response(data, 200)
+        response.mimetype = 'text/plain'
+        return response
     
     return send_from_directory(shared_folder, path)
 
