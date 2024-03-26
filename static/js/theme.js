@@ -62,17 +62,17 @@ function setCodeTheme(){
 }
 
 function lightTheme(){
-    change_theme('light');
-  
-    document.getElementById('lightTheme').removeAttribute('disabled');
-    document.getElementById('darkTheme').setAttribute('disabled', 'disabled');
-  }
-  
-  function darkTheme(){
-    change_theme('dark');
-  
-    document.getElementById('darkTheme').removeAttribute('disabled');
-    document.getElementById('lightTheme').setAttribute('disabled', 'disabled');
-  }
+  change_theme('light');
+
+  document.getElementById('lightTheme').removeAttribute('disabled');
+  document.getElementById('darkTheme').setAttribute('disabled', 'disabled');
+}
+
+function darkTheme(){
+  change_theme('dark');
+
+  document.getElementById('darkTheme').removeAttribute('disabled');
+  document.getElementById('lightTheme').setAttribute('disabled', 'disabled');
+}
 
 console.log(theme)
