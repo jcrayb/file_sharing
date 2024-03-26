@@ -36,11 +36,16 @@ def getFileProps(path):
     path = path.replace('\\', '/')
     fileType = mime.guess_type(path)[0]
     
+    if path.split('/')[0].split('.')[-1] == ".md":
+        return {"type":"text", "ext":'markdown'}
+
     if fileType:
         type = fileType.split('/')[0]
         ext = fileType.split('/')[1]
     else:
-        type= ''
+        if path.split('/')[0].split('.')[-1] == ".md":
+            print(path)
+        type = ''
         ext = ''
     print(type, ext)
     return {"type":type, "ext":ext}
