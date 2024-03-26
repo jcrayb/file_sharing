@@ -40,10 +40,6 @@ def route_get_files(path):
         return response
 
     if filetype == 'text':
-        if ext == 'markdown':
-            html = display_markdown(total_path)
-            return render_template('markdown.html', markdown=html)
-        else:
             data = open(total_path, 'r').read()
             response = make_response(data, 200)
             response.mimetype = 'text/plain'
