@@ -16,8 +16,8 @@ def userpath(path):
     if not path or os.path.isdir(path):
         return abort(404)
 
-    content, language, full_path = generateContent(path)
-    
+    content, language, full_path, props = generateContent(path)
+    print(language)
     if language == 'csv':
         df = pd.read_csv(full_path)
         return render_template('display_sheet.html', raw=os.path.join('/files', path), path=path, table=df.to_html(classes='table table-stripped'))
@@ -25,4 +25,4 @@ def userpath(path):
         html = display_markdown(full_path)
         return render_template('markdown.html', markdown=html)
     
-    return render_template('display_file.html', content=content, language=language, raw=os.path.join('/files', path) ,path=path)
+    return render_template('display_file.html', content=content, language=language, raw=os.path.join('/files', path) ,path=path, props=props)
