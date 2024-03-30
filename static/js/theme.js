@@ -19,8 +19,8 @@ function themed_items(){
     themed_btns = document.querySelectorAll('button[themed]')
 
     Array.from(themed_texts).forEach(element=>{
-        element.classList.remove('theme-light-text')
-        element.classList.add('theme-dark-text')
+        element.classList.remove('text-dark')
+        element.classList.add('text-light')
     })
 
     Array.from(themed_btns).forEach(element=>{
@@ -59,20 +59,6 @@ function setCodeTheme(){
         light_css.removeAttribute('disabled');
         dark_css.setAttribute('disabled', 'disabled');
     }
-}
-
-function lightTheme(){
-  change_theme('light');
-
-  document.getElementById('lightTheme').removeAttribute('disabled');
-  document.getElementById('darkTheme').setAttribute('disabled', 'disabled');
-}
-
-function darkTheme(){
-  change_theme('dark');
-
-  document.getElementById('darkTheme').removeAttribute('disabled');
-  document.getElementById('lightTheme').setAttribute('disabled', 'disabled');
 }
 
 console.log(theme)

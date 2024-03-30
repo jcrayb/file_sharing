@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
   <head>
-    <title>Chris' Cloud Sharing Site</title>
+    <title>{{filename}} - Chris' Cloud Sharing Site</title>
     <link rel="shortcut icon" href="/static/icons/favicon.ico"/>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
@@ -47,6 +47,8 @@ function copyToClipboard(){
 }
 </script>  
 <script src="https://files.jcrayb.com/files/config/file-sharing/theme.js"></script>
+<!-- <script src="/static/js/theme.js"></script> -->
+<link rel="stylesheet" href="https://files.jcrayb.com/files/config/file-sharing/themes.css">
 </head>
 <body onload="hljs.highlightAll(); setCodeTheme(); themed_items();">
   <!-- <div id="userSection">
@@ -56,7 +58,7 @@ function copyToClipboard(){
   <a href="/"><button type="button" name="button">Return to main page</button></a> -->
 
 <div class="container mt-md-4 mt-2">
-  <div class="row w-100 mx-0">
+  <div class="row w-100 mx-0 my-2">
     <div class="col-md-2 px-1 mt-2 mt-md-0">
       <button type="button" themed class="btn btn-light btn-sm w-100 btn-outline-dark" onclick="window.location.href = '{{raw}}'">Get raw file</button>
     </div>
@@ -74,10 +76,8 @@ function copyToClipboard(){
       <p id='response_text' class="w-100"></p>
     </div>
   </div>
-
+  {{parent_dir|safe}}
   <pre class="mt-2"><code class='language-{{language}}' style="display:block; width:100%; padding:20px; border-radius:10px; overflow-x:auto;" id='codebox'>{{content}}</code></pre>
 </div>
-<p class="d-none">{{props}}</p>
-<div id="path" style="display:none">{{path|safe}}</div>
 </body>
 </html>

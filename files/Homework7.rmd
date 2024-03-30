@@ -1,0 +1,377 @@
+---
+title: "Homework 7"
+author: "Chris Raymond-Bertrand"
+date: "Due 3/20/2024"
+output: pdf_document
+---
+
+# Homework Instructions
+
+**Make sure to add your name to the header of the document.  When submitting the assignment on Gradescope, be sure to assign the appropriate pages of your submission to each Exercise.**
+
+The point value for each exercise is noted in the exercise title. 
+
+For questions that require code, please create or use the code chunk directly below the question and type your code there.  Your knitted pdf will then show both the code and the output, so that we can assess your understanding and award any partial credit.  
+
+For written questions, please provide your answer after the indicated *Answer* prompt.
+
+You are encouraged to knit your file as you work, to check that your coding and formatting are done so appropriately.  This will also help you identify and locate any errors more easily.
+
+# Homework Setup 
+
+We'll use the following packages for this homework assignment.  We'll also read in data from a csv file.  To access the data, you'll want to download the dataset from Canvas and place it in the same folder as this R Markdown document.  You'll then be able to use the following code to load in the data.  
+
+```{r libraryload}
+library(ggplot2)
+library(MASS)
+library(leaps)
+```
+
+***
+
+# Exercise 1: Formatting [5 points]
+
+The first five points of the assignment will be earned for properly formatting your final document.  Check that you have:
+
+- included your name on the document
+- properly assigned pages to exercises on Gradescope
+- selected **page 1 (with your name)** and this page for this exercise (Exercise 1)
+- all code is printed and readable for each question
+- all output is printed
+- generated a pdf file
+
+***
+
+# Exercise 2: A First Chick-fil-A Search [15 points]
+
+For the first half of this assignment, we will analyze the nutritional value of menu items from Chick-fil-A, a fast food restaurant specializing in chicken sandwiches.  This data is contained in the chickfila.csv file on Canvas.
+
+We'll be interested in fitting a model to predict the Calories of a new menu item from the other nutritional characteristics of that menu item.
+
+## part a
+
+Read in the chickfila.csv data file.  
+
+```{r exercise2a}
+data <- read.csv('./chickfila.csv')
+data
+```
+
+## part b
+
+How many models predicting the number of Calories in a menu item are possible from this dataset?  (Consider only first-order terms, which means include all of the variables once and exactly as they appear in the dataset.)
+
+```{r exercise2b}
+cols <- ncol(data)
+combinations <- 2^(cols-1)
+combinations
+```
+
+**Answer:**
+
+We can produce 1024 different models to predict the number of calories in a menu item.
+
+## part c
+
+We'll perform model selection in this exercise "by hand".  That means you should not use the `step` function in `R` for this exercise; if you do, you will not receive credit.  We will use a backward searching process and will use the coefficient *p*-values to determine which variables to remove from the model, with an $\alpha$ of **0.01**.
+
+Show the starting model and any subsequent models fit during your searching process here.  
+
+```{r exercise2c}
+linmod <- lm(Calories ~ . - Calories, data)
+summary(linmod)
+summary(lm(Calories ~ . - Calories - TransFat, data))
+summary(lm(Calories ~ . - Calories - TransFat - Cholesterol, data))
+summary(lm(Calories ~ . - Calories - TransFat - Cholesterol - Sugar, data))
+summary(lm(Calories ~ . - Calories - TransFat - Cholesterol - Sugar + 0, data))
+```
+
+## part d
+
+Report the predictor variables included in your selected model from part c.  
+
+**Answer:**
+
+The included predictor variables in our model are "Fat", "SatFat", "Sodium", "Carbs", "Fiber", "Protein", "Serving".
+
+## part e
+
+What was the first variable removed from the model?
+
+**Answer:**
+
+Trans fat would be the first variable to be removed, since it has the highest p-value, and therefore is the least significant.
+
+***
+
+# Exercise 3: Systematic Chick-fil-A Searching Methods [20 points]
+
+Now, we'll consider a more systematic way to select a good model to predict the Calories of a menu item at Chick-fil-A.  For this exercise, we'll use the BIC as our selection metric.
+
+## part a
+
+Perform model selection, using BIC as the metric and backward searching.
+
+Report the predictor variables selected for the final model.  No need to report the fitted coefficients.
+
+```{r exercise3a}
+moda <- stepAIC(linmod, direction = "backward", k = log(nrow(data)))
+moda
+```
+
+**Answer:**
+
+The final variables are Fat, SatFat, Sodium, Carbs, Fiber, Protein, Serving.
+
+## part b
+
+Perform model selection, using BIC as the metric and forward searching.
+
+Report the predictor variables selected for the model after the first step and for the final model.  No need to report the fitted coefficients.
+
+```{r exercise3b}
+fw <- lm(Calories ~ 1, data=data) 
+modb <-stepAIC(fw, direction = "forward", scope = Calories ~ Fat + SatFat + TransFat + Cholesterol + Sodium + 
+    Carbs + Fiber + Sugar + Protein + Serving, k=log(nrow(data)))
+modb
+```
+
+**Answer:**
+
+The selected predictor variables are Fat, Carbs, Protein, Sugar, Serving, SatFat, Fiber, Sodium.
+
+## part c
+
+Perform model selection, using BIC as the metric and stepwise searching starting from the intercept-only model.  
+
+Report the predictor variables selected for the final model.  No need to report the fitted coefficients.  
+
+```{r exercise3c}
+modc <- stepAIC(fw, direction = "both", scope = Calories ~ Fat + SatFat + TransFat + Cholesterol + Sodium + 
+    Carbs + Fiber + Sugar + Protein + Serving, k=log(nrow(data)))
+modc
+```
+
+**Answer:**
+The selected predictor variables are Fat, Carbs, Protein, Serving, SatFat, Fiber, Sodium.
+
+## part d
+
+First, do you select the same models using backward, forward, and stepwise searching?
+
+Then, report the BIC for the final model(s) selected with the three searching methods.  Based on the BIC, which model would you select overall?
+
+```{r exercise3d}
+extractAIC(moda, k=log(nrow(data)))
+extractAIC(modb, k=log(nrow(data)))
+extractAIC(modc, k=log(nrow(data)))
+```
+
+**Answer:**
+
+The backward and stepwise method selected the same variables, and therefore have the same BIC. Model b contains the extra variable "Sugar".
+
+Models a & c have a lower BIC than model b, and therefore are superior models. We should therefore select any of the two former models.
+
+***
+
+
+# Exercise 4: Comparing Chick-Fil-A Model Metrics [30 points]
+
+We aren't sure if any of our searching methods from Exercise 3 identify the overall optimal model.  In this exercise, we'll use exhaustive searching to identify the best optimal model of all possible models.
+
+## part a
+
+First, run the exhaustive searching function.  By default, the exhaustive searching function only selects models with up to 8 predictors included.  Since we have more than 8 possible predictor variables, use the `nvmax` argument to specify the number of possible predictors to consider (we'd like to allow all predictors to be included).  What metric is used to determine the optimal model at each p?  
+
+```{r exercise4a}
+reg <- summary(regsubsets(Calories ~ ., data, nvmax = ncol(data)))
+reg$which
+
+reg$adjr2
+```
+
+**Answer:**
+
+The optimal model at each p is determined by choosing the combination of variables which will result in the lowest SSE.
+
+## part b
+
+Do the optimal models at each p result in nested models for the Chick-fil-A data?  What variables are included in the optimal model with 3 predictor variables? 
+
+**Answer:**
+
+Sometimes, but not always. For example, the variable "Sugar" is first included in the 4th model, but is then subsequently removed and added back in the 8th model.
+
+## part c
+
+Calculate the AIC for each of the models identified in part a.  Based on AIC, which predictor variables should be included in the optimal model?  
+
+```{r exercise5c}
+p <-  length(coef(linmod))
+n <-  length(resid(linmod))
+
+aic <- n * log(reg$rss / n) + 2 * (2:p)
+aic
+```
+
+**Answer:**
+
+We choose the 3rd to last model, since it has the lowest AIC. The variables included therefore are: "Fat", "SatFat", "Sodium", "Carbs", "Fiber", "Sugar", "Protein", "Serving".
+
+
+## part d
+
+Calculate the BIC for each of the models identified in part a.  Based on BIC, which predictor variables should be included in the optimal model?  
+
+```{r exercise4d}
+bic <- n * log(reg$rss / n) + log(n) * (2:p)
+bic
+```
+
+**Answer:**
+
+The model with the lowest BIC is the fourth to last model. The variables are therefore: "Fat", "SatFat", "Sodium", "Carbs", "Fiber", "Protein", "Serving".
+
+## part e
+
+Calculate the adjusted $R^2$ for each of the models identified in part a.  Based on the adjusted $R^2$, which predictor variables should be included in the optimal model?
+
+```{r exercise4e}
+reg$adjr2
+```
+
+**Answer:**
+
+We want to select the model with the highest possible adj R^2. This occurs for the second to last model. The variables included in this model are: are: "Fat", "SatFat", "Cholesterol", "Sodium", "Carbs", "Fiber", "Sugar", "Protein", "Serving".
+
+## part f
+
+Calculate the RMSE for each of the models identified in part a.  Based on the RMSE, which predictor variables should be included in the optimal model?
+
+```{r exercise4f}
+reg$rss/(n-(1:(p-1)))
+```
+
+**Answer:**
+
+We want to selcted the model with the lowest Root Mean Squared Error, which in this case is the second to last model, which includes the following predictor variables: "Fat", "SatFat", "Cholesterol", "Sodium", "Carbs", "Fiber", "Sugar", "Protein", "Serving".
+
+## part g
+
+Are the same models selected for each of parts c through f?  How many different models are selected from the different metrics but with the same exhaustive searching method?  How do these selected models from exhaustive searching compare to the models selected from backwards, forwards, and stepwise searching in Exercise 3? 
+
+**Answer:**
+
+We almost always get different models based on the selection method. BIC will tend to have the smallest model, while adjusted R^2 and RMSE both selected the largest.
+
+## part h
+
+For which of the metrics used in parts c through f is the comparison of models unfair?  In other words, which metric would you not want to use in this situation?
+
+**Answer:**
+
+***
+
+# Exercise 5: Understanding Cats [30 points]
+
+Now, we'll turn to understanding the heart weights of cats.  We can use the `cats` data, which is contained in the MASS package.  The data includes variables on the sex, body weight (Bwt) and heart weight (Hwt) of 144 adult cats.
+
+## part a
+
+Fit a linear model to predict the heart weight of a cat using sex and body weight as the predictor variables.  Print a summary of the model.
+
+```{r exercise5a}
+catmod <- lm(Hwt ~ Sex + Bwt, cats)
+
+?cats
+
+summary(catmod)
+
+```
+
+## part b
+
+Write out one general fitted model for the heart weight of a cat.  Then, write out two specific fitted models for cats based on their sex.
+
+**Answer:**
+
+General model:
+y^ = -0.4149 - Sex * 0.0821 + 4.0758 * Bwt
+
+Male Model:
+y^ = -0.3328 + 4.0758 * Bwt
+
+Female Model:
+y^ = -0.4149 + 4.0758 * Bwt
+
+## part c
+
+Interpret the coefficients from this model.
+
+**Answer:**
+We predict that on average, a cat of bodyweight 0kg would have a heart that weighs -0.4149g, regardless of sex.
+
+We predict that on average, for every 1kg increase in bodyweight, a cat's heart will be 4.0758g heavier regardless of sex.
+
+For the female model, we predict that on average, a female cat of bodyweight 0kg would have a heart that weighs -0.4149g.
+
+For the male model, we predict that on average, a male cat of bodyweight 0kg would have a heart that weighs -0.3328g.
+
+## part d
+
+Fit a second linear model to predict the heart weight of a cat using only sex (not the body weight) as the predictor variable.  Print a summary of the model.
+
+```{r exercise5d}
+summary(lm(Hwt ~ Sex, cats))
+```
+
+## part e
+
+For the remaining parts, you will use one of your models from parts a and d to answer the questions.  Make sure that for each question you choose the appropriate model to address that question.
+
+Using information from one of these two models, what is the sample mean heart weight for male cats?  
+
+**Answer:**
+
+From the second model, we can determine that the sample mean heart weight for male cats is 9.2021 + 2.1206 = `r 9.2021 + 2.1206`
+
+## part f
+
+Using information from one of these two models, what is the difference in the sample mean heart weights between male and female cats?  Which type of cat has the larger heart weight, on average.
+
+**Answer:**
+
+Using the second model, we can see that the difference in the sample mean heart weights between male and female cats would be the value of the slope for the "Sex" variable, which is 2.1206. We can also determine that male cats will have a larger average heart weight, since that slope is positive.
+
+## part g
+
+Using information from one of these two models, is there a statistically significant difference in the mean heart weights between all male and all female cats?  Explain, and be sure to include numerical support.
+
+**Answer:**
+
+Yes, since in the second model, when only taking sex into account, the Sex variable has a t-value of 5.354, way past the 2 required for 95% confidence.
+
+## part h
+
+Using information from one of these two models, is there a statistically significant difference in the mean heart weights between all male and all female cats after controlling for the body weights of cats?  Explain, and be sure to include numerical support.
+
+**Answer:**
+
+No. From the first model, we can see that when accounting for bodyweight, the Sex variable has a p-value of 0.788, which means it is very much not significant.
+
+## part i
+
+Using information from one of these two models, what is the average difference between the heart weights of male and female cats, after controlling for the body weight of a cat?  
+
+**Answer:**
+
+The difference would be the magnitude of the slope of the Sex variable in the first model, which is only $|-0.0821| = 0.0821$.
+
+## part j
+
+Using information from one of these two models, what is the proportion of the variability of the heart weights of cats that can be explained by the linear relationship with body weight and sex?
+
+**Answer:**
+
+From the first model that contains both weight and sex, we can see that it has an $R^2$ value of 0.6468. Therefore, 64.68% of the variability in the weight of a cat's heart can be determined from its linear relationship with bodyweight and sex.

@@ -10,19 +10,25 @@ app = Flask(__name__)
 cloud = Blueprint('cloud', __name__, 
                 template_folder= "./templates")
 
+shared_folder = 'files'
+
 @cloud.route('/pretty/files', defaults={'path': None})
 @cloud.route('/pretty/files/<path:path>')
 def userpath(path):
     if not path or os.path.isdir(path):
         return abort(404)
+    
+    content, language, full_path = generateContent(path)
+    parent_dir = os.path.dirname(os.path.join(shared_folder, path) if path else '')
 
-    content, language, full_path, props = generateContent(path)
-    print(language)
+    filename = os.path.join(shared_folder, path).replace(parent_dir, "").replace('/', '')
+
+    parent_dir_text = f'<a href="/{parent_dir}" class="text-dark text-decoration-none" themed-text><h5 class="text-dark" themed-text><= Go to parent directory</h5></a>' if parent_dir else ''
     if language == 'csv':
         df = pd.read_csv(full_path)
-        return render_template('display_sheet.html', raw=os.path.join('/files', path), path=path, table=df.to_html(classes='table table-stripped'))
+        return render_template('display_sheet.html', raw=os.path.join('/files', path),  table=df.to_html(classes='table table-stripped'), filename=filename, parent_dir=parent_dir_text)
     elif language == 'markdown':
         html = display_markdown(full_path)
-        return render_template('markdown.html', markdown=html)
+        return render_template('markdown.html', markdown=html, raw=os.path.join('/files', path), filename=filename, parent_dir=parent_dir_text)
     
-    return render_template('display_file.html', content=content, language=language, raw=os.path.join('/files', path) ,path=path, props=props)
+    return render_template('display_file.html', content=content, language=language, raw=os.path.join('/files', path), filename=filename, parent_dir=parent_dir_text)

@@ -30,7 +30,7 @@ def generateContent(path):
         if language == 'json':
             content = json.dumps(json.loads(content), indent=1)
     print(language)
-    return content, language, os.path.join(cwd, path), props
+    return content, language, os.path.join(cwd, path)
 
 def getFileProps(path):
     path = path.replace('\\', '/')

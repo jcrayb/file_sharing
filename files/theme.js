@@ -19,8 +19,8 @@ function themed_items(){
     themed_btns = document.querySelectorAll('button[themed]')
 
     Array.from(themed_texts).forEach(element=>{
-        element.classList.remove('theme-light-text')
-        element.classList.add('theme-dark-text')
+        element.classList.remove('text-light')
+        element.classList.add('text-dark')
     })
 
     Array.from(themed_btns).forEach(element=>{

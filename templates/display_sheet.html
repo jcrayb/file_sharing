@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
   <head>
-    <title>Chris' File Sharing Site</title>
+    <title>{{filename}} - Chris' Cloud Sharing Site</title>
     <link rel="shortcut icon" href="/static/icons/favicon.ico"/>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
@@ -78,6 +78,7 @@ function copyToClipboard(){
         <p id='response_text' class="w-100"></p>
       </div>
     </div>
+    {{parent_dir|safe}}
 <div class="overflow-auto w-100 mt-2">
   {{table|safe}}
 </div>

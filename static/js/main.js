@@ -52,7 +52,7 @@ function display_saved_links(property_name){
         <div id="link-${index}">
             <div class="card p-2 my-2">
                 <div class="row">
-                    <a href="${link[1]}" class="text-decoration-none col-10 theme-light-text" themed-text>
+                    <a href="${link[1]}" class="text-decoration-none col-10 text-dark" themed-text>
                         <div>
                             <p class="m-0">Name: &ensp; ${link[0]}</p> 
                             <p class="m-0">Link: &ensp; ${link[1]}</p>
