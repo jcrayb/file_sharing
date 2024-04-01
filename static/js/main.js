@@ -17,8 +17,9 @@ function save_link(){
         document.getElementById('save-link-error').innerHTML = "The link you are trying to save isn't from files.jcrayb.com."
         return
     }
-    append_to_local_storage('files', name, link)
-    display_saved_links('files')
+    append_to_local_storage('files', name, link);
+    display_saved_links('files');
+    window.Location.reload();
 }
 
 function append_to_local_storage(property_name, name, value){
@@ -74,4 +75,5 @@ function remove_link(index){
     document.getElementById(`link-${index}`).remove();
     remove_from_local_storage('files', index);
     display_saved_links('files');
+    window.Location.reload();
 }

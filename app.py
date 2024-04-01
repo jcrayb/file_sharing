@@ -25,8 +25,9 @@ def route_get_files(path):
     if not os.path.exists(total_path):
         return make_response('File doesn\'t exist', 404)
     if os.path.isdir(total_path):
-        
-        parent_dir_text = f'<a href="/{parent_dir}" class="text-dark text-decoration-none" themed-text><h5 class="text-dark" themed-text><= Go to parent directory</h5></a>' if parent_dir else ''
+        decorative_text = "<= Go to parent directory" if path else "<= Go to main menu"
+        parent_dir_text = f'''<a href="/{parent_dir}" class="text-dark text-decoration-none" themed-text>
+                                <h5 class="text-dark" themed-text>{decorative_text}</h5></a>'''
         return render_template('dir.html', dir=total_path, parent_dir=parent_dir_text, dirname=total_path.replace(parent_dir, "").replace('/', ''))
     
     try:
