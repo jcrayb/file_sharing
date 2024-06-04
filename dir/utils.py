@@ -70,7 +70,8 @@ def list_folders(dir: str) -> list:
     current_path = os.path.join(os.getcwd(), dir)
     #dir = dir.replace('files', '')
     for element in os.listdir(current_path):
-        if os.path.isdir(os.path.join(current_path, element)):
+        print(element)
+        if os.path.isdir(os.path.join(current_path, element)) and not element[0] == '.':
             folders += [(element, os.path.join(dir, element))]
     return folders
 
@@ -101,8 +102,12 @@ def tile_images(img_dir: str, grid: tuple) -> np.array:
 
         img_dims_list += [(width, height, i)]
         i+=1
-    results['folders'] = folders_list
-    results['files'] = files_list
+        
+    results['folders'] = [folder for folder in folders_list if not folder[0][0] == '.']
+    results['files'] = [file for file in files_list if not file[0][0] == '.']
+
+    
+
     random.shuffle(img_dims_list)
     #sorted_dims = sorted(img_dims_list, reverse=True)
     #sorted_dims = sorted(sorted_dims, key=lambda x: x[1], reverse=False)

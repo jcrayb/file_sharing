@@ -13,6 +13,9 @@ function fetch_tiling(){
             return
         }
         console.log(1)
+        
+        console.log(data['folders'])
+
         resize_containers();
         generate_tiling(data['images']);
         list_files(data['files']);

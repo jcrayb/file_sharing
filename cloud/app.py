@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint, request, jsonify, abort
+from flask import Flask, render_template, Blueprint, request, jsonify, abort, make_response
 import os
 import pandas as pd
 
@@ -17,7 +17,7 @@ shared_folder = 'files'
 def userpath(path):
     if not path or os.path.isdir(path):
         return abort(404)
-    
+
     content, language, full_path = generateContent(path)
     parent_dir = os.path.dirname(os.path.join(shared_folder, path) if path else '')
 

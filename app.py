@@ -22,14 +22,17 @@ shared_folder = 'files'
 def route_get_files(path):
     total_path = os.path.join(shared_folder, path)
     parent_dir = os.path.dirname(total_path) if path else ''
+
     if not os.path.exists(total_path):
         return make_response('File doesn\'t exist', 404)
+    
     if os.path.isdir(total_path):
         decorative_text = "<= Go to parent directory" if path else "<= Go to main menu"
         parent_dir_text = f'''<a href="/{parent_dir}" class="text-dark text-decoration-none" themed-text>
                                 <h5 class="text-dark" themed-text>{decorative_text}</h5></a>'''
         return render_template('dir.html', dir=total_path, parent_dir=parent_dir_text, dirname=total_path.replace(parent_dir, "").replace('/', ''))
-    
+
+
     try:
         mime = guess_type(total_path)[0].split('/')
         filetype = mime[0]

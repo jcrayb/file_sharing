@@ -20,6 +20,7 @@ def route_api_images():
         return cache[1]
     while not returned:
         array, returned, results = tile_images(img_dir, grid)
+        print(results)
         cache_layout(img_dir, results)
     return results
 
