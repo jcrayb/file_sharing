@@ -27,7 +27,8 @@ def userpath(path):
     if language == 'csv':
         df = pd.read_csv(full_path)
         return render_template('display_sheet.html', raw=os.path.join('/files', path),  table=df.to_html(classes='table table-stripped'), filename=filename, parent_dir=parent_dir_text)
-    elif language == 'markdown':
+    elif filename[-2:].lower() == 'md':
+        print(filename)
         html = display_markdown(full_path)
         return render_template('markdown.html', markdown=html, raw=os.path.join('/files', path), filename=filename, parent_dir=parent_dir_text)
     
