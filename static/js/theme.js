@@ -57,7 +57,7 @@ function setCodeTheme(){
         light_css.setAttribute('disabled', 'disabled');
     }else{
         light_css.removeAttribute('disabled');
-        dark_css.setAttribute('disabled', 'disabled');
+        dark_css.setAttribute('disabled', 'disabled'); 
     }
 }
 

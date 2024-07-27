@@ -7,7 +7,7 @@ import json
 
 def display_markdown(file_path):
     md = open(file_path, 'r').read()
-    html = markdown.markdown(md, extensions=['tables'])
+    html = markdown.markdown(md, extensions=['tables', "codehilite", 'fenced_code'])
     return html
 
 def serve_pil_image(pil_img):
