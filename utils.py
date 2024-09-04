@@ -1,14 +1,12 @@
 import markdown
-import markdown.extensions.mathjax
 from io import StringIO
 from flask import send_file
 import json
-import latex
 
 
 def display_markdown(file_path):
     md = open(file_path, 'r').read()
-    html = markdown.markdown(md, extensions=['tables', "codehilite", 'fenced_code', latex])
+    html = markdown.markdown(md, extensions=['tables', "codehilite", 'fenced_code'])
     return html
 
 def serve_pil_image(pil_img):
