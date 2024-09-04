@@ -4,7 +4,6 @@ from flask import send_file
 import json
 
 
-
 def display_markdown(file_path):
     md = open(file_path, 'r').read()
     html = markdown.markdown(md, extensions=['tables', "codehilite", 'fenced_code'])
