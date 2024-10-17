@@ -4,7 +4,7 @@ from flask import send_file
 import json
 
 def isProtected(path):
-    protected_files = json.loads(open('./protected-files.json', 'r').read())
+    protected_files = json.loads(open('./config/protected-files.json', 'r').read())
 
     if path in protected_files:
         return True, protected_files[path]
