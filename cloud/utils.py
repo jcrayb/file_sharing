@@ -2,6 +2,8 @@ import os
 import mimetypes as mime
 import json
 
+from utils import isProtected
+
 cwd = os.path.join(os.getcwd(), 'files')
 
 extDict = {
