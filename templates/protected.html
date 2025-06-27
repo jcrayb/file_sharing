@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{dirname}} - Chris' Cloud Sharing Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Chris Raymond-Bertrand">
+    <meta name="robots" content="noindex">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    
+    <script src="https://files.jcrayb.com/files/config/file-sharing/theme.js"></script>
+    <script src="https://files.jcrayb.com/files/config/file-sharing/share.js"></script>
+
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <link rel="stylesheet" href="/static/css/md-code-dark.css" id="darkTheme">
+    <link rel="stylesheet" href="/static/css/md-code-light.css" id="lightTheme">
+
+    <script>
+        function check_password() {
+            var path = document.getElementById("path").innerText;
+            var password = document.getElementById("password").value;
+            window.location.href = "/protected/"+ path + "?password=" + password;
+        }
+    </script>
+</head>
+<body onload="themed_items(); setCodeTheme();">
+
+    <div class="container mt-4">
+      <h1>Content in: {{dir}}</h1>
+        {{parent_dir|safe}}
+          {% if error %}
+            <div class="alert alert-danger" role="alert">
+              {{error}}
+            </div>
+          {% endif %}
+          <p class="mt-5"><span id="path">{{path}}</span> is a protected file.</p>
+
+          <input type="text" name="password" class="form-control mt-2 w-100" id="password" autocomplete="off">
+          <button type="button" themed class="btn btn-secondary mt-2" onclick="check_password()">Submit</button>
+    </div>
+</body>
+</html>
