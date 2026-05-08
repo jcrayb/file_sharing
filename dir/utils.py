@@ -7,6 +7,7 @@ import time
 import json
 
 cached_dict_dir = './cache/cached.json'
+hidden_list_dir = './config/hidden-files.json'
 
 def is_cached(dir):
     if not os.path.exists(cached_dict_dir):
@@ -26,6 +27,7 @@ def is_cached(dir):
     return
 
 def cache_layout(dir, layout):
+    return
     layouts = json.load(open(cached_dict_dir, 'r'))
     layouts[dir] = {'layout':layout, 'contents':os.listdir(dir)}
     json.dump(layouts, open(cached_dict_dir, 'w'))
@@ -70,7 +72,7 @@ def list_folders(dir: str) -> list:
     current_path = os.path.join(os.getcwd(), dir)
     #dir = dir.replace('files', '')
     for element in os.listdir(current_path):
-        print(element)
+        
         if os.path.isdir(os.path.join(current_path, element)) and not element[0] == '.':
             folders += [(element, os.path.join(dir, element))]
     return folders
@@ -103,11 +105,10 @@ def tile_images(img_dir: str, grid: tuple) -> np.array:
         img_dims_list += [(width, height, i)]
         i+=1
         
-    results['folders'] = [folder for folder in folders_list if not folder[0][0] == '.']
+    results['folders'] = [folder for folder in folders_list if (not folder[0][0] == '.') and (not folder[1] in hidden_list_dir)]
     results['files'] = [file for file in files_list if not file[0][0] == '.']
-
-    
-
+    hidden_folders = json.load(open(hidden_list_dir, 'r'))
+    results['folders'] = [f for f in results['folders'] if not f[1] in hidden_folders]
     random.shuffle(img_dims_list)
     #sorted_dims = sorted(img_dims_list, reverse=True)
     #sorted_dims = sorted(sorted_dims, key=lambda x: x[1], reverse=False)

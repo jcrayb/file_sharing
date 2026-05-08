@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Blueprint, request, jsonify
 import os
+import json
 
 from .utils import tile_images, list_folders, is_cached, cache_layout
 
@@ -9,6 +10,8 @@ grid = (6, 20)
 
 dir = Blueprint('dir', __name__, 
                 template_folder= "./templates")
+
+hidden_list_dir = './config/hidden-files.json'
 
 @dir.route('/api/images')
 def route_api_images():
@@ -20,7 +23,9 @@ def route_api_images():
         return cache[1]
     while not returned:
         array, returned, results = tile_images(img_dir, grid)
-        print(results)
+        hidden_folders = json.load(open(hidden_list_dir, 'r'))
+        results['folders'] = [f for f in results['folders'] if not f[1].replace('files/', '') in hidden_folders]
+        print(hidden_folders, results['folders'])
         cache_layout(img_dir, results)
     return results
 

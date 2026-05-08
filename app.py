@@ -117,5 +117,10 @@ if __name__ == '__main__':
     if not os.path.exists('./config/protected-files.json'):
         init = {}
         json.dump(init, open('./config/protected-files.json', 'w'))
+        
+    if not os.path.exists('./config/hidden-files.json'):
+        init = []
+        json.dump(init, open('./config/hidden-files.json', 'w'))
+
     #app.run(host="0.0.0.0", port = '8080')
     app.run(host="0.0.0.0", port = '8080', debug=True)
