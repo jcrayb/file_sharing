@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  app:
+    image: jcrayb/file_sharing:latest
+    ports:
+      - "8006:8080"
+    volumes:
+      - type: bind
+        source: /home/chris/ssd/shared-files
+        target: /app/files
+      - type: bind
+        source: /home/chris/Documents/docker/file-sharing/config
+        target: /app/config
+    networks:
+      webhost:
+        ipv4_address: 172.10.1.6
+    restart: unless-stopped
+networks:
+  webhost:
+    name: webhost
+    external: true
